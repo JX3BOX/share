@@ -3,3 +3,71 @@
         .ml(10px);
     }
 }
+
+.m-face-list {
+    .mt(20px);
+    .u-list {
+        .clearfix;
+        list-style:none;
+        padding:0;
+        margin:0;
+    }
+    .u-item {
+        .fl;
+        .mr(20px);
+        .mb(20px);
+        .db;
+    }
+    .u-face {
+        .db;
+        .size(190px,240px);
+        border: 1px solid @border-hr;
+        padding: 5px;
+        transition: all 0.2s ease-in-out;
+        .r(4px);
+
+        &:hover {
+            filter: saturate(120%) brightness(110%);
+            border-color: @primary;
+        }
+
+        .u-info {
+            .pa;
+            .lb(0);
+            .size(100%, 30%);
+            background-color: rgba(0, 0, 0, 0.6);
+            .fz(12px);
+            padding: 5px 0;
+            b,
+            em {
+                .db;
+                .nobreak;
+                .auto(x);
+                font-weight: 300;
+                color: #eee;
+            }
+            b {
+                .w(90px);
+            }
+            em {
+                .w(70px);
+            }
+            transform: translateY(100%);
+            transition: 0.1s ease-in-out;
+        }
+        &:hover {
+            .u-info {
+                transform: translateY(0);
+            }
+        }
+
+        i,img{
+            .db;
+            .size(100%);
+        }
+    }
+    .u-down{
+        .db;.auto(x);
+        .mt(10px);
+    }
+}

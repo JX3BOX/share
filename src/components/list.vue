@@ -132,10 +132,16 @@
         </div>
 
         <!-- 列表 -->
-        <div class="m-archive-list" v-if="data.length">
+        <div class="m-face-list" v-if="data.length">
             <ul class="u-list">
                 <li class="u-item" v-for="(item, i) in data" :key="i">
-                    {{item.post.post_meta}}
+                    <a class="u-face" :target="target" :href="item.post.ID | postLink">
+                        <i>
+                            <img class="u-pic" :src="showThumb(item)">
+                            <!-- <span class="u-author">{{showAuthor(item)}}</span> -->
+                        </i>
+                    </a>
+                    <a class="u-down u-btn-down el-button el-button--default is-plain el-button--mini" :class="{'is-disabled':!showFile(item)}" :href="showFile(item)"><i class="el-icon-download"></i><span>立即下载</span></a>
                 </li>
             </ul>
         </div>
@@ -187,6 +193,7 @@ import {
     showMinibanner,
     publishLink,
     buildTarget,
+    resolveImagePath
 } from "@jx3box/jx3box-common/js/utils";
 const mark_map = {
     newbie: "新手易用",
@@ -215,7 +222,7 @@ export default {
             page: 1, //当前页数
             total: 1, //总条目数
             pages: 1, //总页数
-            per: 10, //每页条目
+            per: 21, //每页条目
             order: "", //排序模式
             mark: "", //筛选模式
 
@@ -313,6 +320,26 @@ export default {
         showBanner: function(val) {
             return val ? showMinibanner(val) : this.defaultBanner;
         },
+        showThumb : function (item){
+            let url = _.get(item.post.post_meta,"pics[0]['url']")
+            if(url){
+                return resolveImagePath(url) + '?x-oss-process=style/face_thumb'
+            }else{
+                // TODO:默认占位图
+                return ''
+            }
+        },
+        showAuthor(item) {
+            return _.get(item.post.post_meta,"author") || '匿名'
+        },
+        showFile(item){
+            let url = _.get(item.post.post_meta,"file") || ''
+            if(url){
+                return resolveImagePath(url)
+            }else{
+                return ''
+            }
+        }
     },
     filters: {
         dateFormat: function(val) {

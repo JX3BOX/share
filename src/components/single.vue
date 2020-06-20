@@ -66,36 +66,54 @@
             </el-alert>
 
             <div class="m-single-meta">
-                <el-carousel
-                    class="m-house-pics"
-                    :interval="4000"
-                    type="card"
-                    v-if="meta.pics && meta.pics.length"
-                >
-                    <el-carousel-item
-                        class="u-item"
-                        v-for="(item, i) in meta.pics"
-                        :key="i"
-                    >
-                        <div
-                            class="m-house-pic"
-                            v-if="meta.pics && meta.pics.length"
+                <div class="m-single-pics" v-if="meta.pics && meta.pics.length">
+                    <el-carousel :interval="4000" type="card">
+                        <el-carousel-item
+                            v-for="(item, i) in meta.pics"
+                            :key="i"
                         >
-                            <img
-                                v-photoswipe:single
-                                :src="item.url | showImage"
-                                class="u-pic"
-                            />
-                        </div>
-                    </el-carousel-item>
-                </el-carousel>
+                            <div class="m-face-pic">
+                                <img
+                                    v-photoswipe:single
+                                    :src="item.url | showImage"
+                                    class="u-pic"
+                                />
+                            </div>
+                        </el-carousel-item>
+                    </el-carousel>
+                </div>
+                <div class="m-single-actions">
+                    <Like
+                        class="u-like"
+                        mode="heart"
+                        :count="post.likes"
+                        :showCount="true"
+                        txt="喜欢"
+                    />
+                </div>
+                <div class="m-single-file" v-if="file">
+                    <el-table :data="downdata">
+                        <el-table-column prop="author" label="数据作者">
+                        </el-table-column>
+                        <el-table-column prop="type" label="数据体型">
+                        </el-table-column>
+                        <el-table-column prop="file" label="数据下载">
+                            <template slot-scope="scope">
+                                <Down
+                                    classes="u-down el-button el-button--primary el-button--small is-plain"
+                                    :url="scope.row.file"
+                                    :showCount="true"
+                                    :count="post.downs"
+                                />
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
             </div>
-
-            <!-- 摘要 -->
-            <!-- <div class="m-single-excerpt" v-if="excerpt">
-                <el-divider content-position="left">Excerpt</el-divider>
-                {{ excerpt }}
-            </div> -->
+            <div class="m-single-data">
+                <el-divider content-position="left">独家数据分析</el-divider>
+                <facedata v-if="facedata" :data="facedata"/>
+            </div>
         </div>
 
         <!-- 文章内容 -->
@@ -136,12 +154,13 @@
 // 助手函数
 import _ from "lodash";
 import dateFormat from "../utils/dateFormat";
-import { authorLink, editLink } from "@jx3box/jx3box-common/js/utils.js";
+import { authorLink, editLink,resolveImagePath } from "@jx3box/jx3box-common/js/utils.js";
 // 变量模块
 import { __Links } from "@jx3box/jx3box-common/js/jx3box.json";
 import User from "@jx3box/jx3box-common/js/user.js";
 // 数据服务
 import { getPost } from "../service/post.js";
+import facedata from '@/components/facedata.vue'
 
 export default {
     name: "single",
@@ -196,6 +215,19 @@ export default {
         excerpt: function() {
             return _.get(this.post, "post_excerpt");
         },
+        file : function (){
+            return resolveImagePath(_.get(this.post.post_meta, "file"))
+        },
+        downdata : function (){
+            return [{
+                author : _.get(this.post.post_meta, "author"),
+                file : this.file,
+                type : this.post_subtype
+            }]
+        },
+        facedata : function (){
+            return _.get(this.post.post_meta, "data")
+        }
     },
     methods: {
         formatMeta: function(key) {
@@ -207,7 +239,11 @@ export default {
             }
         },
     },
-    filters: {},
+    filters: {
+        showImage: function(val) {
+            return resolveImagePath(val);
+        },
+    },
     created: function() {
         if (this.id) {
             this.loading = true;
@@ -227,9 +263,13 @@ export default {
                 });
         }
     },
+    components : {
+        facedata
+    }
 };
 </script>
 
 <style lang="less">
 @import "../assets/css/single.less";
+@import "../assets/css/face.less";
 </style>
