@@ -1,40 +1,43 @@
 <template>
     <div class="m-single-box" :loading="loading">
-
         <!-- 头部 -->
         <header class="m-single-header">
-
             <!-- 标题 -->
             <div class="m-single-title">
-                <a class="u-title u-sub-block" :href="url">{{title}}</a>
+                <a class="u-title u-sub-block" :href="url">{{ title }}</a>
             </div>
 
             <!-- 信息 -->
             <div class="m-single-info">
-
                 <!-- 用户名 -->
                 <div class="u-author u-sub-block">
-                    <i class="u-author-icon"><img svg-inline src="../assets/img/single/author.svg"/></i>
+                    <i class="u-author-icon"
+                        ><img svg-inline src="../assets/img/single/author.svg"
+                    /></i>
                     <a class="u-name" :href="author_link">{{ author_name }}</a>
                 </div>
 
                 <!-- 自定义字段 -->
                 <div class="u-meta u-sub-block">
-                    <em class="u-label">首领</em>
+                    <em class="u-label">类型</em>
                     <span class="u-value">
-                        {{ formatMeta("fb_boss") }}
+                        {{ post_subtype }}
                     </span>
                 </div>
 
                 <!-- 发布日期 -->
                 <span class="u-podate u-sub-block" title="发布日期">
-                    <i class="u-icon-podate"><img svg-inline src="../assets/img/single/podate.svg"/></i>
+                    <i class="u-icon-podate"
+                        ><img svg-inline src="../assets/img/single/podate.svg"
+                    /></i>
                     <time>{{ post_date }}</time>
                 </span>
 
                 <!-- 最后更新 -->
                 <span class="u-modate u-sub-block" title="最后更新">
-                    <i class="u-icon-modate"><img svg-inline src="../assets/img/single/modate.svg"/></i>
+                    <i class="u-icon-modate"
+                        ><img svg-inline src="../assets/img/single/modate.svg"
+                    /></i>
                     <time>{{ update_date }}</time>
                 </span>
 
@@ -49,25 +52,60 @@
             <div class="m-single-panel">
                 <Fav />
             </div>
-
         </header>
 
         <!-- 文章前 -->
         <div class="m-single-prepend">
+            <el-alert
+                class="m-single-notice"
+                title="特别说明"
+                type="warning"
+                description="我们尊重和保护原作者版权，部分作品由玩家自发从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除。"
+                show-icon
+            >
+            </el-alert>
 
-            <!-- 摘要 -->
-            <div class="m-single-excerpt" v-if="excerpt">
-                <el-divider content-position="left">Excerpt</el-divider>
-                {{ excerpt }}
+            <div class="m-single-meta">
+                <el-carousel
+                    class="m-house-pics"
+                    :interval="4000"
+                    type="card"
+                    v-if="meta.pics && meta.pics.length"
+                >
+                    <el-carousel-item
+                        class="u-item"
+                        v-for="(item, i) in meta.pics"
+                        :key="i"
+                    >
+                        <div
+                            class="m-house-pic"
+                            v-if="meta.pics && meta.pics.length"
+                        >
+                            <img
+                                v-photoswipe:single
+                                :src="item.url | showImage"
+                                class="u-pic"
+                            />
+                        </div>
+                    </el-carousel-item>
+                </el-carousel>
             </div>
 
+            <!-- 摘要 -->
+            <!-- <div class="m-single-excerpt" v-if="excerpt">
+                <el-divider content-position="left">Excerpt</el-divider>
+                {{ excerpt }}
+            </div> -->
         </div>
 
         <!-- 文章内容 -->
         <div class="m-single-post">
             <el-divider content-position="left">JX3BOX</el-divider>
             <div class="m-single-content">
-                <Article :content="post.post_content" directorybox="#directory"/>
+                <Article
+                    :content="post.post_content"
+                    directorybox="#directory"
+                />
             </div>
         </div>
 
@@ -122,36 +160,42 @@ export default {
         id: function() {
             return this.$store.state.pid;
         },
-        title : function (){
-            return _.get(this.post,'post_title') || '无标题' 
+        title: function() {
+            return _.get(this.post, "post_title") || this.post_subtype;
         },
-        url : function (){
-            return location.href
+        url: function() {
+            return location.href;
         },
         author_link: function() {
-            return authorLink(_.get(this.author,'uid'));
+            return authorLink(_.get(this.author, "uid"));
         },
-        author_name : function (){
-            return _.get(this.author,'name') || '匿名'
+        author_name: function() {
+            return _.get(this.author, "name") || "匿名";
         },
-        post_date : function (){
-            return dateFormat(new Date(_.get(this.post,'post_date')));
+        post_date: function() {
+            return dateFormat(new Date(_.get(this.post, "post_date")));
         },
-        update_date : function (){
-            return dateFormat(new Date(_.get(this.post,'post_modified')));
+        post_subtype: function() {
+            return _.get(this.post, "post_subtype") || "空";
+        },
+        update_date: function() {
+            return dateFormat(new Date(_.get(this.post, "post_modified")));
         },
         edit_link: function() {
-            return editLink(_.get(this.post,'post_type'), _.get(this.post,'ID'));
+            return editLink(
+                _.get(this.post, "post_type"),
+                _.get(this.post, "ID")
+            );
         },
         canEdit: function() {
             return (
-                _.get(this.post,'post_author') == User.getInfo().uid ||
+                _.get(this.post, "post_author") == User.getInfo().uid ||
                 User.getInfo().group > 60
             );
         },
-        excerpt : function (){
-            return _.get(this.post,'post_excerpt')
-        }
+        excerpt: function() {
+            return _.get(this.post, "post_excerpt");
+        },
     },
     methods: {
         formatMeta: function(key) {
@@ -167,7 +211,7 @@ export default {
     created: function() {
         if (this.id) {
             this.loading = true;
-            getPost(this.id,this)
+            getPost(this.id, this)
                 .then((res) => {
                     this.post = this.$store.state.post = res.data.data.post;
                     this.meta = this.$store.state.meta =

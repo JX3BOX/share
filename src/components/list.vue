@@ -35,11 +35,15 @@
 
             <!-- 发布按钮 -->
             <a :href="publish_link" class="u-publish el-button el-button--primary el-button--small" >
-                + 发布副本攻略
+                + 发布捏脸分享
             </a>
 
+            <!-- <span class="u-filter u-notice">
+                我们尊重和保护原作者版权，部分作品由玩家自发从淘宝购买上传，如有侵权，请联系admin@jx3box.com，我们将立即删除。
+            </span> -->
+
             <!-- 角标过滤 -->
-            <div class="u-filter" :class="{ on: filter_visible }">
+            <!-- <div class="u-filter" :class="{ on: filter_visible }">
                 <span class="u-label" @click="showFilter">
                     <span class="u-current-filter">筛选 : {{ currentMark || "全部" }}</span>
                     <span class="u-toggle">
@@ -80,7 +84,7 @@
                         ><i class="el-icon-medal-1"></i> 骨灰必备</span
                     >
                 </span>
-            </div>
+            </div> -->
 
             <!-- 排序模式 -->
             <div class="u-modes" :class="{ on: order_visible }">
@@ -104,7 +108,7 @@
                         @click="reorder('podate')"
                         ><i class="el-icon-sort"></i> 最早发布</span
                     >
-                    <span
+                    <!-- <span
                         class="u-mode u-likes"
                         :class="{ on: order == 'likes' }"
                         @click="reorder('likes')"
@@ -121,7 +125,7 @@
                         :class="{ on: order == 'downs' }"
                         @click="reorder('downs')"
                         ><i class="el-icon-download"></i> 下载最多</span
-                    >
+                    > -->
                 </span>
             </div>
 
@@ -131,70 +135,7 @@
         <div class="m-archive-list" v-if="data.length">
             <ul class="u-list">
                 <li class="u-item" v-for="(item, i) in data" :key="i">
-
-                    <!-- Banner -->
-                    <a
-                        class="u-banner"
-                        :href="item.post.ID | postLink"
-                        :target="target"
-                        ><img :src="showBanner(item.post.post_banner)"
-                    /></a>
-
-                    <h2 class="u-post" :class="{ isSticky: item.post.sticky }">
-                        <img
-                            class="u-icon"
-                            svg-inline
-                            src="../assets/img/list/post.svg"
-                        />
-
-                        <!-- 标题文字 -->
-                        <a
-                            class="u-title"
-                            :style="item.post.color | isHighlight"
-                            :href="item.post.ID | postLink"
-                            :target="target"
-                            >{{ item.post.post_title || '无标题'}}</a
-                        >
-
-                        <!-- 角标 -->
-                        <span
-                            class="u-marks"
-                            v-if="item.post.mark && item.post.mark.length"
-                        >
-                            <i
-                                v-for="mark in item.post.mark"
-                                class="u-mark"
-                                :key="mark"
-                                >{{ mark | showMark }}</i
-                            >
-                        </span>
-                    </h2>
-
-                    <!-- 字段 -->
-                    <div class="u-content u-desc">
-                        字段内容区
-                    </div>
-
-                    <!-- 作者 -->
-                    <div class="u-misc">
-                        <img
-                            class="u-author-avatar"
-                            :src="item.author.avatar | showAvatar"
-                            :alt="item.author.name"
-                        />
-                        <a
-                            class="u-author-name"
-                            :href="item.author.uid | authorLink"
-                            target="_blank"
-                            >{{ item.author.name }}</a
-                        >
-                        <span class="u-date">
-                            Updated on
-                            <time>{{
-                                item.post.post_modified | dateFormat
-                            }}</time>
-                        </span>
-                    </div>
+                    {{item.post.post_meta}}
                 </li>
             </ul>
         </div>
@@ -268,7 +209,7 @@ export default {
             loading: false, //加载状态
 
             search : '',
-            searchType : '',
+            searchType : 'authorname',
 
             data: [], //数据列表
             page: 1, //当前页数
@@ -320,7 +261,7 @@ export default {
             return ''
         },
         publish_link: function(val) {
-            return publishLink("fb");
+            return publishLink("share");
         },
     },
     methods: {
