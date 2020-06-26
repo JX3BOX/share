@@ -8,12 +8,39 @@
 }
 
 .m-single-meta{
-    // .clearfix;
+    display: flex;
+}
+.m-single-data{
+    flex:1;
 }
 
 .m-single-pics{
-    // .fl;
-    // .w(50%);
+    .fl;
+    .w(400px);
+    .mr(20px);
+    .el-carousel{
+        .h(600px);
+    }
+}
+
+.m-face-pic{
+    .h(100%);
+    // display: flex;
+    // align-items: center;
+    .u-pic{
+        .w(100%);
+        .auto(x);
+        .db;
+    }
+}
+@media screen and (max-width:@phone){
+    .m-single-meta{
+        .db;
+    }
+    .m-single-pics{
+        float:none;
+        .w(100%);
+    }
 }
 
 .m-single-actions{
@@ -43,10 +70,4 @@
     }
 }
 
-.m-face-pic{
-    .h(100%);
-    .u-pic{
-        .h(100%);
-        .w(auto);
-    }
-}
+

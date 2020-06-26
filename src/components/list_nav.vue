@@ -6,9 +6,9 @@
         </div>
 
         <h5 class="u-title">在线应用</h5>
-        <div class="m-nav-group">
+        <div class="m-nav-group m-share-app">
             <router-link to="/parse">
-                <img svg-inline src="../assets/img/logo.svg" />
+                <img svg-inline src="../assets/img/mirror.svg" />
                 <span>脸型数据分析</span>
             </router-link>
         </div>
