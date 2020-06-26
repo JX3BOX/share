@@ -14,7 +14,7 @@
                     slot="prepend"
                     placeholder="请选择"
                 >
-                    <el-option label="作者" value="authorname"></el-option>
+                    <el-option label="作者" value="meta_1"></el-option>
                     <el-option label="标题" value="title"></el-option>
                 </el-select>
                 <el-button slot="append" icon="el-icon-search"></el-button>
@@ -216,7 +216,7 @@ export default {
             loading: false, //加载状态
 
             search : '',
-            searchType : 'authorname',
+            searchType : 'meta_1',
 
             data: [], //数据列表
             page: 1, //当前页数
