@@ -7,10 +7,10 @@
 
         <h5 class="u-title">在线应用</h5>
         <div class="m-nav-group m-share-app">
-            <router-link to="/parse">
+            <a href="/app/facedata" target="_blank">
                 <img svg-inline src="../assets/img/mirror.svg" />
                 <span>脸型数据分析</span>
-            </router-link>
+            </a>
         </div>
     </div>
 </template>

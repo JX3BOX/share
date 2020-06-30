@@ -9,7 +9,7 @@
 
         <div class="m-info-router">
             <router-link to="/"><i class="el-icon-collection"></i></router-link>
-            <router-link to="/parse"><i class="el-icon-set-up"></i></router-link>
+            <a href="/app/facedata" target="_blank"><i class="el-icon-set-up"></i></a>
         </div>
     </div>
 </template>

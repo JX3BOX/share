@@ -1,6 +1,5 @@
 <template>
     <div class="m-archive-box" :loading="loading">
-
         <!-- 搜索 -->
         <div class="m-archive-search">
             <el-input
@@ -32,9 +31,11 @@
 
         <!-- 排序 -->
         <div class="m-archive-order">
-
             <!-- 发布按钮 -->
-            <a :href="publish_link" class="u-publish el-button el-button--primary el-button--small" >
+            <a
+                :href="publish_link"
+                class="u-publish el-button el-button--primary el-button--small"
+            >
                 + 发布捏脸分享
             </a>
 
@@ -89,7 +90,9 @@
             <!-- 排序模式 -->
             <div class="u-modes" :class="{ on: order_visible }">
                 <span class="u-label" @click="showOrder">
-                    <span class="u-current-order">排序 : {{ currentOrder || "最后更新" }}</span>
+                    <span class="u-current-order"
+                        >排序 : {{ currentOrder || "最后更新" }}</span
+                    >
                     <span class="u-toggle">
                         <i class="el-icon-arrow-down"></i>
                         <i class="el-icon-arrow-up"></i>
@@ -128,22 +131,33 @@
                     > -->
                 </span>
             </div>
-
         </div>
 
         <!-- 列表 -->
         <div class="m-face-list" v-if="data.length">
-            <ul class="u-list">
-                <li class="u-item" v-for="(item, i) in data" :key="i">
-                    <a class="u-face" :target="target" :href="item.post.ID | postLink">
-                        <i>
-                            <img class="u-pic" :src="showThumb(item)">
-                            <!-- <span class="u-author">{{showAuthor(item)}}</span> -->
-                        </i>
-                    </a>
-                    <a class="u-down u-btn-down el-button el-button--default is-plain el-button--mini" :class="{'is-disabled':!showFile(item)}" :href="showFile(item)"><i class="el-icon-download"></i><span>立即下载</span></a>
-                </li>
-            </ul>
+            <el-row class="u-list" :gutter="20">
+                <el-col :span="3" v-for="(item, i) in data" :key="i">
+                    <li class="u-item" >
+                        <a
+                            class="u-face"
+                            :target="target"
+                            :href="item.post.ID | postLink"
+                        >
+                            <i>
+                                <img class="u-pic" :src="showThumb(item)" />
+                                <!-- <span class="u-author">{{showAuthor(item)}}</span> -->
+                            </i>
+                        </a>
+                        <a
+                            class="u-down u-btn-down el-button el-button--default is-plain el-button--mini"
+                            :class="{ 'is-disabled': !showFile(item) }"
+                            :href="showFile(item)"
+                            ><i class="el-icon-download"></i
+                            ><span>立即下载</span></a
+                        >
+                    </li>
+                </el-col>
+            </el-row>
         </div>
 
         <!-- 空 -->
@@ -193,7 +207,7 @@ import {
     showMinibanner,
     publishLink,
     buildTarget,
-    resolveImagePath
+    resolveImagePath,
 } from "@jx3box/jx3box-common/js/utils";
 const mark_map = {
     newbie: "新手易用",
@@ -202,12 +216,12 @@ const mark_map = {
     geek: "骨灰必备",
 };
 const order_map = {
-    update : '最后更新',
-    podate : '最早发布',
-    favs : '收藏最多',
-    likes : '点赞最多',
-    downs : '下载最多'
-}
+    update: "最后更新",
+    podate: "最早发布",
+    favs: "收藏最多",
+    likes: "点赞最多",
+    downs: "下载最多",
+};
 export default {
     name: "list",
     props: [],
@@ -215,24 +229,24 @@ export default {
         return {
             loading: false, //加载状态
 
-            search : '',
-            searchType : 'meta_1',
+            search: "",
+            searchType: "meta_1",
 
             data: [], //数据列表
             page: 1, //当前页数
             total: 1, //总条目数
             pages: 1, //总页数
-            per: 21, //每页条目
+            per: 24, //每页条目
             order: "", //排序模式
             mark: "", //筛选模式
 
             filter_visible: false,
-            order_visible : false
+            order_visible: false,
         };
     },
     computed: {
-        subtype : function (){
-            return this.$store.state.subtype  
+        subtype: function() {
+            return this.$store.state.subtype;
         },
         params: function() {
             let params = {
@@ -253,8 +267,8 @@ export default {
         currentMark: function() {
             return mark_map[this.mark];
         },
-        currentOrder : function (){
-            return order_map[this.order]
+        currentOrder: function() {
+            return order_map[this.order];
         },
         hasNextPage: function() {
             return this.total > 1 && this.page < this.pages;
@@ -265,7 +279,7 @@ export default {
 
         // 根据栏目定义
         defaultBanner: function() {
-            return ''
+            return "";
         },
         publish_link: function(val) {
             return publishLink("share");
@@ -314,32 +328,34 @@ export default {
         showFilter: function() {
             this.filter_visible = !this.filter_visible;
         },
-        showOrder : function (){
+        showOrder: function() {
             this.order_visible = !this.order_visible;
         },
         showBanner: function(val) {
             return val ? showMinibanner(val) : this.defaultBanner;
         },
-        showThumb : function (item){
-            let url = _.get(item.post.post_meta,"pics[0]['url']")
-            if(url){
-                return resolveImagePath(url) + '?x-oss-process=style/face_thumb'
-            }else{
+        showThumb: function(item) {
+            let url = _.get(item.post.post_meta, "pics[0]['url']");
+            if (url) {
+                return (
+                    resolveImagePath(url) + "?x-oss-process=style/face_thumb"
+                );
+            } else {
                 // TODO:默认占位图
-                return ''
+                return "";
             }
         },
         showAuthor(item) {
-            return _.get(item.post.post_meta,"author") || '匿名'
+            return _.get(item.post.post_meta, "author") || "匿名";
         },
-        showFile(item){
-            let url = _.get(item.post.post_meta,"file") || ''
-            if(url){
-                return resolveImagePath(url)
-            }else{
-                return ''
+        showFile(item) {
+            let url = _.get(item.post.post_meta, "file") || "";
+            if (url) {
+                return resolveImagePath(url);
+            } else {
+                return "";
             }
-        }
+        },
     },
     filters: {
         dateFormat: function(val) {
@@ -364,9 +380,7 @@ export default {
     created: function() {
         this.loadPosts(1);
     },
-    components: {
-        
-    },
+    components: {},
 };
 </script>
 

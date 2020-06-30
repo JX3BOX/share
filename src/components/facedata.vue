@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { __ossMirror } from "@jx3box/jx3box-common/js/jx3box.json";
+import { __ossMirror,__iconPath } from "@jx3box/jx3box-common/js/jx3box.json";
 export default {
     name: "facedata",
     props: ["data"],
@@ -113,7 +113,7 @@ export default {
     computed: {},
     methods: {
         iconUrl: function(id) {
-            return __ossMirror + "icon/" + id + ".png";
+            return __iconPath + "icon/" + id + ".png";
         },
     },
     filters: {},
