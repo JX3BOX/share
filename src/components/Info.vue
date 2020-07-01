@@ -1,10 +1,8 @@
 <template>
     <div class="m-info">
         <div class="m-info-notice">
-            <span class="u-item" href="/macro/#/">🌈 捏脸栏目切换至新版系统</span>
-            <!-- <span class="u-item" href="/macro/#/">🌈 <span>即将上线</span> · 私人宏仓库</span> -->
-            <!-- <span class="u-item" href="/macro/#/">✨ <span>即将上线</span> · 云端宏一键同步</span> -->
-            <!-- <span class="u-item" href="/house/#/rank">⚽️ <span>即将上线</span> · 云端宏排行榜</span> -->
+            <span class="u-item" href="/app/facedata" target="_blank">💄 妆容解析</span>
+            <a class="u-item" href="https://jq.qq.com/?_wv=1027&k=InbtJGcw" target="_blank">⚽️ 交流群</a>
         </div>
 
         <div class="m-info-router">

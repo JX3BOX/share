@@ -36,7 +36,7 @@
                 :href="publish_link"
                 class="u-publish el-button el-button--primary el-button--small"
             >
-                + 发布捏脸分享
+                + 发布捏脸数据
             </a>
 
             <!-- <span class="u-filter u-notice">
@@ -236,7 +236,7 @@ export default {
             page: 1, //当前页数
             total: 1, //总条目数
             pages: 1, //总页数
-            per: 24, //每页条目
+            per: 32, //每页条目
             order: "", //排序模式
             mark: "", //筛选模式
 
