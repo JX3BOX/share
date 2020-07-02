@@ -113,7 +113,7 @@
                     <el-table-column prop="file" label="数据下载">
                         <template slot-scope="scope">
                             <Down
-                                classes="u-down el-button el-button--primary el-button--small is-plain"
+                                classes="u-down el-button el-button--primary el-button--small"
                                 :url="scope.row.file"
                                 :showCount="true"
                                 :count="post.downs"
