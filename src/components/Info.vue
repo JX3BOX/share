@@ -1,8 +1,8 @@
 <template>
     <div class="m-info">
         <div class="m-info-notice">
-            <!-- <span class="u-item" href="/app/facedata" target="_blank">💄 妆容解析</span> -->
-            <a class="u-item" href="https://jq.qq.com/?_wv=1027&k=InbtJGcw" target="_blank">⚽️ 交流群</a>
+            <span class="u-item" href="/app/facedata" target="_blank">💄 更换版块标志,移动适配优化</span>
+            <!-- <a class="u-item" href="https://jq.qq.com/?_wv=1027&k=InbtJGcw" target="_blank">⚽️ 交流群</a> -->
         </div>
 
         <div class="m-info-router">

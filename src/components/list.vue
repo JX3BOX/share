@@ -43,10 +43,12 @@
                 我们尊重和保护原作者版权，部分作品由玩家自发从淘宝购买上传，如有侵权，请联系admin@jx3box.com，我们将立即删除。
             </span> -->
 
-            <!-- 角标过滤 -->
-            <!-- <div class="u-filter" :class="{ on: filter_visible }">
-                <span class="u-label" @click="showFilter">
-                    <span class="u-current-filter">筛选 : {{ currentMark || "全部" }}</span>
+            <!-- meta过滤 -->
+            <div class="u-filter" :class="{ on: facetype_visible }">
+                <span class="u-label" @click="showFacetype">
+                    <span class="u-current-order"
+                        ><i class="el-icon-collection-tag"></i> {{ facetype || "全部" }}</span
+                    >
                     <span class="u-toggle">
                         <i class="el-icon-arrow-down"></i>
                         <i class="el-icon-arrow-up"></i>
@@ -55,37 +57,36 @@
                 <span class="u-options">
                     <span
                         class="u-mode u-all"
-                        :class="{ on: mark == '' }"
-                        @click="filterMark('')"
-                        ><i class="el-icon-s-operation"></i> 全部</span
+                        :class="{ on: facetype == '' }"
+                        @click="filterFacetype('')"
+                        ><i class="el-icon-collection-tag"></i> 全部</span
                     >
                     <span
-                        class="u-mode u-newbie"
-                        :class="{ on: mark == 'newbie' }"
-                        @click="filterMark('newbie')"
-                        ><i class="el-icon-user"></i> 新手易用</span
+                        class="u-mode"
+                        :class="{ on: facetype == '成男' }"
+                        @click="filterFacetype('成男')"
+                        ><i class="el-icon-collection-tag"></i> 成男</span
                     >
                     <span
-                        class="u-mode u-advanced"
-                        :class="{ on: mark == 'advanced' }"
-                        @click="filterMark('advanced')"
-                        ><i class="el-icon-data-line"></i> 进阶推荐</span
+                        class="u-mode"
+                        :class="{ on: facetype == '成女' }"
+                        @click="filterFacetype('成女')"
+                        ><i class="el-icon-collection-tag"></i> 成女</span
                     >
                     <span
-                        class="u-mode u-recommended"
-                        :class="{ on: mark == 'recommended' }"
-                        @click="filterMark('recommended')"
-                        ><i class="el-icon-star-off"></i> 编辑精选</span
+                        class="u-mode"
+                        :class="{ on: facetype == '正太' }"
+                        @click="filterFacetype('正太')"
+                        ><i class="el-icon-collection-tag"></i> 正太</span
                     >
                     <span
-                        class="u-mode u-geek"
-                        :class="{ on: mark == 'geek' }"
-                        plain
-                        @click="filterMark('geek')"
-                        ><i class="el-icon-medal-1"></i> 骨灰必备</span
+                        class="u-mode"
+                        :class="{ on: facetype == '萝莉' }"
+                        @click="filterFacetype('萝莉')"
+                        ><i class="el-icon-collection-tag"></i> 萝莉</span
                     >
                 </span>
-            </div> -->
+            </div>
 
             <!-- 排序模式 -->
             <div class="u-modes" :class="{ on: order_visible }">
@@ -242,6 +243,9 @@ export default {
 
             filter_visible: false,
             order_visible: false,
+
+            facetype : '',
+            facetype_visible : '',
         };
     },
     computed: {
@@ -253,6 +257,7 @@ export default {
                 per: this.per,
                 subtype: this.subtype,
             };
+            params.subtype = this.facetype
             if (this.search) {
                 params[this.searchType] = this.search;
             }
@@ -356,6 +361,13 @@ export default {
                 return "";
             }
         },
+        filterFacetype:function (val){
+            this.facetype = val
+            this.loadPosts()
+        },
+        showFacetype : function (){
+            this.facetype_visible = !this.facetype_visible;
+        }
     },
     filters: {
         dateFormat: function(val) {

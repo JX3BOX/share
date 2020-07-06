@@ -12,7 +12,7 @@
             :adminEnable="true"
             :feedbackEnable="true"
         >
-            <img slot="logo" svg-inline src="./assets/img/share.svg" />
+            <img slot="logo" svg-inline src="./assets/img/face.svg" />
             <Info />
         </Breadcrumb>
         <!-- <template v-if="mode == 'single'">
