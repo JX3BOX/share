@@ -22,15 +22,22 @@
     .fl;
     .w(400px);
     .mr(20px);
-    .el-carousel{
+    .el-carousel__container{
         .h(600px);
+    }
+}
+@media screen and (max-width:@phone){
+    .m-single-pics{
+        .el-carousel__container{
+            .h(200px) !important;
+        }
     }
 }
 
 .m-face-pic{
     .h(100%);
-    // display: flex;
-    // align-items: center;
+    display: flex;
+    align-items: center;
     .u-pic{
         .w(100%);
         .auto(x);

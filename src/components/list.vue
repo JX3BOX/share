@@ -44,7 +44,7 @@
             </span> -->
 
             <!-- meta过滤 -->
-            <div class="u-filter" :class="{ on: facetype_visible }">
+            <!-- <div class="u-filter" :class="{ on: facetype_visible }">
                 <span class="u-label" @click="showFacetype">
                     <span class="u-current-order"
                         ><i class="el-icon-collection-tag"></i> {{ facetype || "全部" }}</span
@@ -86,7 +86,7 @@
                         ><i class="el-icon-collection-tag"></i> 萝莉</span
                     >
                 </span>
-            </div>
+            </div> -->
 
             <!-- 排序模式 -->
             <div class="u-modes" :class="{ on: order_visible }">
@@ -257,7 +257,7 @@ export default {
                 per: this.per,
                 subtype: this.subtype,
             };
-            params.subtype = this.facetype
+            // params.subtype = this.facetype
             if (this.search) {
                 params[this.searchType] = this.search;
             }

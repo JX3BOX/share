@@ -1,7 +1,7 @@
 <template>
     <div class="m-list-nav">
         <RightSideMsg>
-            <em>家园玩法交流群</em> :
+            <em>休闲玩法交流群</em> :
             <strong><a href="https://jq.qq.com/?_wv=1027&k=InbtJGcw">658035079</a></strong>
         </RightSideMsg>
         
