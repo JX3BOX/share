@@ -44,7 +44,7 @@
                 <!-- 查看次数 -->
                 <span class="u-views u-sub-block">
                     <i class="el-icon-view"></i>
-                    {{setting.views}}
+                    {{ setting.views }}
                 </span>
 
                 <!-- 编辑 -->
@@ -53,20 +53,10 @@
                     <span>编辑</span>
                 </a>
             </div>
-
         </header>
 
         <!-- 文章前 -->
         <div class="m-single-prepend">
-            <el-alert
-                class="m-single-notice"
-                title="特别说明"
-                type="warning"
-                description="我们尊重和保护原作者版权，部分作品由玩家自发从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除。"
-                show-icon
-            >
-            </el-alert>
-
             <div class="m-single-meta">
                 <div class="m-single-pics" v-if="meta.pics && meta.pics.length">
                     <el-carousel :interval="4000" arrow="always" height="600px">
@@ -118,15 +108,22 @@
                     </el-table-column>
                 </el-table>
             </div>
+
+            <el-alert
+                class="m-single-notice"
+                title="特别说明"
+                type="warning"
+                description="我们尊重和保护原作者版权，部分作品由玩家自发从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除。"
+                show-icon
+            >
+            </el-alert>
         </div>
 
         <!-- 文章内容 -->
         <div class="m-single-post">
             <el-divider content-position="left">JX3BOX</el-divider>
             <div class="m-single-content">
-                <Article
-                    :content="post.post_content"
-                />
+                <Article :content="post.post_content" />
             </div>
         </div>
 
@@ -135,9 +132,9 @@
             <!-- 操作 -->
             <div class="m-single-panel" v-if="!loading">
                 <div class="u-minigroup">
-                    <Print class="u-fn" :title="title"/>
+                    <!-- <Print class="u-fn" :title="title" /> -->
                     <QRcode class="u-fn" />
-                    <Sharing class="u-fn" :title="title"/>
+                    <Sharing class="u-fn" :title="title" />
                 </div>
                 <Fav />
             </div>
@@ -164,7 +161,7 @@
 </template>
 
 <script>
-import Article from '@jx3box/jx3box-editor/src/Article.vue'
+import Article from "@jx3box/jx3box-editor/src/Article.vue";
 // 助手函数
 import _ from "lodash";
 import dateFormat from "../utils/dateFormat";
@@ -178,7 +175,7 @@ import { __Links } from "@jx3box/jx3box-common/js/jx3box.json";
 import User from "@jx3box/jx3box-common/js/user.js";
 // 数据服务
 import { getPost } from "../service/post.js";
-import { getStat,postStat } from "../service/stat.js";
+import { getStat, postStat } from "../service/stat.js";
 import facedata from "@/components/facedata.vue";
 
 export default {
@@ -284,14 +281,14 @@ export default {
                 });
 
             getStat(this.id).then((data) => {
-                if(data) this.setting = this.$store.state.setting = data;
-            })
-            postStat(this.id)
+                if (data) this.setting = this.$store.state.setting = data;
+            });
+            postStat(this.id);
         }
     },
     components: {
         facedata,
-        Article
+        Article,
     },
 };
 </script>
