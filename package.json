@@ -12,8 +12,8 @@
   "dependencies": {
     "@jx3box/jx3box-comment-ui": "^1.2.2",
     "@jx3box/jx3box-common": "^5.0.4",
-    "@jx3box/jx3box-common-ui": "^2.2.2",
-    "@jx3box/jx3box-editor": "0.0.2",
+    "@jx3box/jx3box-common-ui": "^2.2.4",
+    "@jx3box/jx3box-editor": "0.0.5",
     "axios": "^0.19.2",
     "core-js": "^3.4.3",
     "element-ui": "^2.13.0",
