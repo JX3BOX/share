@@ -1,10 +1,10 @@
-import axios from "axios";
+import { $ } from "./axios";
 import { __server } from "@jx3box/jx3box-common/js/jx3box.json";
-const API_LIST = __server + "post/list";
-const API_SINGLE = __server + "post/find";
-import failCallback from '../utils/fail'
+const API_LIST = "post/list";
+const API_SINGLE = "post/find";
+import failCallback from "../utils/fail";
 
-function getPosts(params,vm) {
+function getPosts(params, vm) {
     let query = {
         type: "share",
     };
@@ -12,20 +12,20 @@ function getPosts(params,vm) {
         query = Object.assign(query, params);
     }
 
-    return axios.get(API_LIST, {
+    return $.get(API_LIST, {
         params: query,
     }).catch((err) => {
-        failCallback(err,vm)
-    })
+        failCallback(err, vm);
+    });
 }
-function getPost(pid,vm) {
-    return axios.get(API_SINGLE, {
+function getPost(pid, vm) {
+    return $.get(API_SINGLE, {
         params: {
             id: pid,
         },
     }).catch((err) => {
-        failCallback(err,vm)
-    })
+        failCallback(err, vm);
+    });
 }
 
 export { getPosts, getPost };
