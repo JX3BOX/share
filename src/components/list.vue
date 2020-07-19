@@ -12,6 +12,7 @@
                     v-model="searchType"
                     slot="prepend"
                     placeholder="请选择"
+                    @change="commitSearch"
                 >
                     <el-option label="作者" value="meta_1"></el-option>
                     <el-option label="标题" value="title"></el-option>
@@ -36,57 +37,8 @@
                 :href="publish_link"
                 class="u-publish el-button el-button--primary el-button--small"
             >
-                + 发布捏脸数据
+                + 分享脸型妆容
             </a>
-
-            <!-- <span class="u-filter u-notice">
-                我们尊重和保护原作者版权，部分作品由玩家自发从淘宝购买上传，如有侵权，请联系admin@jx3box.com，我们将立即删除。
-            </span> -->
-
-            <!-- meta过滤 -->
-            <!-- <div class="u-filter" :class="{ on: facetype_visible }">
-                <span class="u-label" @click="showFacetype">
-                    <span class="u-current-order"
-                        ><i class="el-icon-collection-tag"></i> {{ facetype || "全部" }}</span
-                    >
-                    <span class="u-toggle">
-                        <i class="el-icon-arrow-down"></i>
-                        <i class="el-icon-arrow-up"></i>
-                    </span>
-                </span>
-                <span class="u-options">
-                    <span
-                        class="u-mode u-all"
-                        :class="{ on: facetype == '' }"
-                        @click="filterFacetype('')"
-                        ><i class="el-icon-collection-tag"></i> 全部</span
-                    >
-                    <span
-                        class="u-mode"
-                        :class="{ on: facetype == '成男' }"
-                        @click="filterFacetype('成男')"
-                        ><i class="el-icon-collection-tag"></i> 成男</span
-                    >
-                    <span
-                        class="u-mode"
-                        :class="{ on: facetype == '成女' }"
-                        @click="filterFacetype('成女')"
-                        ><i class="el-icon-collection-tag"></i> 成女</span
-                    >
-                    <span
-                        class="u-mode"
-                        :class="{ on: facetype == '正太' }"
-                        @click="filterFacetype('正太')"
-                        ><i class="el-icon-collection-tag"></i> 正太</span
-                    >
-                    <span
-                        class="u-mode"
-                        :class="{ on: facetype == '萝莉' }"
-                        @click="filterFacetype('萝莉')"
-                        ><i class="el-icon-collection-tag"></i> 萝莉</span
-                    >
-                </span>
-            </div> -->
 
             <!-- 排序模式 -->
             <div class="u-modes" :class="{ on: order_visible }">
@@ -145,7 +97,7 @@
                             :href="item.post.ID | postLink"
                         >
                             <i>
-                                <img class="u-pic" :src="showThumb(item)" />
+                                <img class="u-pic" :src="showThumb(item)" loading="lazy"/>
                                 <!-- <span class="u-author">{{showAuthor(item)}}</span> -->
                             </i>
                         </a>

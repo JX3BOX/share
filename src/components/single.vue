@@ -1,63 +1,12 @@
 <template>
-    <div class="m-single-box" :loading="loading">
-        <!-- 头部 -->
-        <header class="m-single-header">
-            <!-- 标题 -->
-            <div class="m-single-title">
-                <a class="u-title u-sub-block" :href="url"><i v-if="isOriginal" class="u-original">原创</i> {{ title }}</a>
-            </div>
-
-            <!-- 信息 -->
-            <div class="m-single-info">
-                <!-- 用户名 -->
-                <div class="u-author u-sub-block">
-                    <i class="u-author-icon"
-                        ><img svg-inline src="../assets/img/single/author.svg"
-                    /></i>
-                    <a class="u-name" :href="author_link">{{ author_name }}</a>
-                </div>
-
-                <!-- 自定义字段 -->
-                <div class="u-meta u-sub-block">
-                    <em class="u-label">类型</em>
-                    <span class="u-value">
-                        {{ post_subtype }}
-                    </span>
-                </div>
-
-                <!-- 发布日期 -->
-                <span class="u-podate u-sub-block" title="发布日期">
-                    <i class="u-icon-podate"
-                        ><img svg-inline src="../assets/img/single/podate.svg"
-                    /></i>
-                    <time>{{ post_date }}</time>
-                </span>
-
-                <!-- 最后更新 -->
-                <span class="u-modate u-sub-block" title="最后更新">
-                    <i class="u-icon-modate"
-                        ><img svg-inline src="../assets/img/single/modate.svg"
-                    /></i>
-                    <time>{{ update_date }}</time>
-                </span>
-
-                <!-- 查看次数 -->
-                <span class="u-views u-sub-block">
-                    <i class="el-icon-view"></i>
-                    {{ setting.views }}
-                </span>
-
-                <!-- 编辑 -->
-                <a class="u-edit u-sub-block" :href="edit_link" v-if="canEdit">
-                    <i class="u-icon-edit el-icon-edit-outline"></i>
-                    <span>编辑</span>
-                </a>
-            </div>
-        </header>
-
-        <!-- 文章前 -->
-        <div class="m-single-prepend">
-            <div class="m-single-meta">
+    <singlebox :post="post" :author="author" :stat="stat" v-loading="loading">
+        <div class="u-meta u-sub-block" slot="single-header">
+            <em class="u-label">类型</em>
+            <span class="u-value">
+                {{ post_subtype }}
+            </span>
+        </div>
+        <div class="m-single-meta">
                 <div class="m-single-pics" v-if="meta.pics && meta.pics.length">
                     <el-carousel :interval="4000" arrow="always" height="600px">
                         <el-carousel-item
@@ -102,78 +51,27 @@
                                 classes="u-down el-button el-button--primary el-button--small"
                                 :url="scope.row.file"
                                 :showCount="true"
-                                :count="post.downs"
+                                :count="stat.downs"
                             />
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
-
             <el-alert
                 class="m-single-notice"
                 title="特别说明"
                 type="warning"
-                description="我们尊重和保护原作者版权，部分作品由玩家自发从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除。"
+                description="我们尊重和保护原作者版权，部分作品由网站团队自费从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除，亦欢迎作者自行上传推广自己作品。"
                 show-icon
             >
             </el-alert>
-        </div>
-
-        <!-- 文章内容 -->
-        <div class="m-single-post">
-            <el-divider content-position="left">JX3BOX</el-divider>
-            <div class="m-single-content">
-                <Article :content="post.post_content" />
-            </div>
-        </div>
-
-        <!-- 文章后 -->
-        <div class="m-single-append">
-            <!-- 操作 -->
-            <div class="m-single-panel" v-if="!loading">
-                <div class="u-minigroup">
-                    <!-- <Print class="u-fn" :title="title" /> -->
-                    <QRcode class="u-fn" />
-                    <Sharing class="u-fn" :title="title" />
-                </div>
-                <Fav />
-            </div>
-        </div>
-
-        <!-- 评论 -->
-        <div class="m-single-comment">
-            <el-divider content-position="left">评论</el-divider>
-            <Comment :post-id="id" />
-        </div>
-
-        <!-- 底部 -->
-        <footer class="m-single-footer">
-            <!-- <ins
-                class="adsbygoogle"
-                style="display:block;max-width:100%;overflow:hidden;margin:10px;"
-                data-ad-client="ca-pub-4388499329141185"
-                data-ad-slot="1787190081"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-            ></ins> -->
-        </footer>
-    </div>
+    </singlebox>
 </template>
 
 <script>
-import Article from "@jx3box/jx3box-editor/src/Article.vue";
-// 助手函数
-import _ from "lodash";
-import dateFormat from "../utils/dateFormat";
-import {
-    authorLink,
-    editLink,
-    resolveImagePath,
-} from "@jx3box/jx3box-common/js/utils.js";
-// 变量模块
-import { __Links } from "@jx3box/jx3box-common/js/jx3box.json";
-import User from "@jx3box/jx3box-common/js/user.js";
-// 数据服务
+import _ from 'lodash'
+import singlebox from "@jx3box/jx3box-page/src/cms-single";
+import {resolveImagePath} from '@jx3box/jx3box-common/js/utils'
 import { getPost } from "../service/post.js";
 import { getStat, postStat } from "../service/stat.js";
 import facedata from "@/components/facedata.vue";
@@ -186,53 +84,17 @@ export default {
             loading: false,
 
             post: {},
-            setting: {},
+            stat: {},
             meta: {},
             author: {},
         };
     },
     computed: {
-        isOriginal:function (){
-            return !!~~_.get(this.post, "original")
-        },
         id: function() {
             return this.$store.state.pid;
         },
-        title: function() {
-            return _.get(this.post, "post_title") || this.post_subtype;
-        },
-        url: function() {
-            return location.href;
-        },
-        author_link: function() {
-            return authorLink(_.get(this.author, "uid"));
-        },
-        author_name: function() {
-            return _.get(this.author, "name") || "匿名";
-        },
-        post_date: function() {
-            return dateFormat(new Date(_.get(this.post, "post_date")));
-        },
         post_subtype: function() {
-            return _.get(this.post, "post_subtype") || "空";
-        },
-        update_date: function() {
-            return dateFormat(new Date(_.get(this.post, "post_modified")));
-        },
-        edit_link: function() {
-            return editLink(
-                _.get(this.post, "post_type"),
-                _.get(this.post, "ID")
-            );
-        },
-        canEdit: function() {
-            return (
-                _.get(this.post, "post_author") == User.getInfo().uid ||
-                User.getInfo().group > 60
-            );
-        },
-        excerpt: function() {
-            return _.get(this.post, "post_excerpt");
+            return _.get(this.post, "post_subtype") || '';
         },
         file: function() {
             return resolveImagePath(_.get(this.post.post_meta, "file"));
@@ -273,25 +135,26 @@ export default {
                     this.post = this.$store.state.post = res.data.data.post;
                     this.meta = this.$store.state.meta =
                         res.data.data.post.post_meta;
-                    // this.setting = this.$store.state.setting =
-                    //     res.data.data.post;
                     this.author = this.$store.state.author =
                         res.data.data.author;
                     this.$store.state.status = true;
+
+                    // 分享海报重定义
+                    this.post.post_banner = this.meta.pics && this.meta.pics.length && this.meta.pics[0]['url']
                 })
                 .finally(() => {
                     this.loading = false;
                 });
 
             getStat(this.id).then((data) => {
-                if (data) this.setting = this.$store.state.setting = data;
+                if (data) this.stat = this.$store.state.stat = data;
             });
             postStat(this.id);
         }
     },
     components: {
         facedata,
-        Article,
+        singlebox,
     },
 };
 </script>
