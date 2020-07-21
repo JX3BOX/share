@@ -1,90 +1,44 @@
 <template>
-    <div class="m-archive-box" :loading="loading">
-        <!-- 搜索 -->
-        <div class="m-archive-search">
-            <el-input
-                placeholder="请输入关键词"
-                v-model="search"
-                class="input-with-select"
-                @change="commitSearch"
-            >
-                <el-select
-                    v-model="searchType"
-                    slot="prepend"
-                    placeholder="请选择"
-                    @change="commitSearch"
-                >
-                    <el-option label="作者" value="meta_1"></el-option>
-                    <el-option label="标题" value="title"></el-option>
-                </el-select>
-                <el-button slot="append" icon="el-icon-search"></el-button>
-            </el-input>
-            <!-- <el-switch
-                    class="u-switch u-hasdata"
-                    slot="append"
-                    v-model="hasData"
-                    active-color="#13ce66"
-                    inactive-text="只看有蓝图"
-                    @change="commitSearch"
-                >
-                </el-switch> -->
-        </div>
-
-        <!-- 排序 -->
-        <div class="m-archive-order">
-            <!-- 发布按钮 -->
-            <a
+    <div class="m-archive" v-loading="loading">
+        <listbox
+            :data="data"
+            :total="total"
+            :pages="pages"
+            :per="per"
+            :page="page"
+            @appendPage="appendPage"
+            @changePage="changePage"
+        >
+            <template slot="filter">
+                <a
                 :href="publish_link"
                 class="u-publish el-button el-button--primary el-button--small"
             >
                 + 分享脸型妆容
             </a>
-
-            <!-- 排序模式 -->
-            <div class="u-modes" :class="{ on: order_visible }">
-                <span class="u-label" @click="showOrder">
-                    <span class="u-current-order"
-                        >排序 : {{ currentOrder || "最后更新" }}</span
+                <!-- 排序过滤 -->
+                <orderBy @filter="filter"></orderBy>
+            </template>
+            <!-- 搜索 -->
+            <div class="m-archive-search" slot="search-before">
+                <el-input
+                    placeholder="请输入关键词"
+                    v-model="search"
+                    class="input-with-select"
+                    @change="loadPosts"
+                >
+                    <el-select
+                        v-model="searchType"
+                        slot="prepend"
+                        placeholder="请选择"
+                        @change="loadPosts"
                     >
-                    <span class="u-toggle">
-                        <i class="el-icon-arrow-down"></i>
-                        <i class="el-icon-arrow-up"></i>
-                    </span>
-                </span>
-                <span class="u-options">
-                    <span
-                        class="u-mode u-update"
-                        :class="{ on: order == 'update' }"
-                        @click="reorder('update')"
-                        ><i class="el-icon-refresh"></i> 最后更新</span
-                    >
-                    <span
-                        class="u-mode u-podate"
-                        :class="{ on: order == 'podate' }"
-                        @click="reorder('podate')"
-                        ><i class="el-icon-sort"></i> 最早发布</span
-                    >
-                    <!-- <span
-                        class="u-mode u-likes"
-                        :class="{ on: order == 'likes' }"
-                        @click="reorder('likes')"
-                        ><i class="el-icon-star-off"></i> 点赞最多</span
-                    >
-                    <span
-                        class="u-mode u-favs"
-                        :class="{ on: order == 'favs' }"
-                        @click="reorder('favs')"
-                        ><i class="el-icon-star-off"></i> 收藏最多</span
-                    >
-                    <span
-                        class="u-mode u-downs"
-                        :class="{ on: order == 'downs' }"
-                        @click="reorder('downs')"
-                        ><i class="el-icon-download"></i> 下载最多</span
-                    > -->
-                </span>
+                        <el-option label="作者" value="meta_1"></el-option>
+                        <el-option label="标题" value="title"></el-option>
+                    </el-select>
+                    <el-button slot="append" icon="el-icon-search"></el-button>
+                </el-input>
             </div>
-        </div>
 
         <!-- 列表 -->
         <div class="m-face-list" v-if="data.length">
@@ -112,44 +66,14 @@
                 </el-col>
             </el-row>
         </div>
+        </listbox>
 
-        <!-- 空 -->
-        <el-alert
-            v-else
-            class="m-archive-null"
-            title="没有找到相关条目"
-            type="info"
-            center
-            show-icon
-        >
-        </el-alert>
-
-        <!-- 下一页 -->
-        <el-button
-            class="m-archive-more"
-            :class="{ show: hasNextPage }"
-            type="primary"
-            :loading="loading"
-            @click="appendPage(++page)"
-            >加载更多</el-button
-        >
-
-        <!-- 分页 -->
-        <el-pagination
-            class="m-archive-pages"
-            :page-size="per"
-            background
-            :hide-on-single-page="true"
-            @current-change="changePage"
-            :current-page.sync="page"
-            layout="total, prev, pager, next, jumper"
-            :total="total"
-        >
-        </el-pagination>
     </div>
 </template>
 
 <script>
+import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
+import { cms as mark_map } from "@jx3box/jx3box-common/js/mark.json";
 import _ from "lodash";
 import { getPosts } from "../service/post";
 import dateFormat from "../utils/dateFormat";
@@ -162,19 +86,6 @@ import {
     buildTarget,
     resolveImagePath,
 } from "@jx3box/jx3box-common/js/utils";
-const mark_map = {
-    newbie: "新手易用",
-    advanced: "进阶推荐",
-    recommended: "编辑精选",
-    geek: "骨灰必备",
-};
-const order_map = {
-    update: "最后更新",
-    podate: "最早发布",
-    favs: "收藏最多",
-    likes: "点赞最多",
-    downs: "下载最多",
-};
 export default {
     name: "list",
     props: [],
@@ -190,11 +101,9 @@ export default {
             total: 1, //总条目数
             pages: 1, //总页数
             per: 32, //每页条目
+
             order: "", //排序模式
             mark: "", //筛选模式
-
-            filter_visible: false,
-            order_visible: false,
 
             facetype : '',
             facetype_visible : '',
@@ -221,19 +130,9 @@ export default {
             }
             return params;
         },
-        currentMark: function() {
-            return mark_map[this.mark];
-        },
-        currentOrder: function() {
-            return order_map[this.order];
-        },
-        hasNextPage: function() {
-            return this.total > 1 && this.page < this.pages;
-        },
         target: function() {
             return buildTarget();
         },
-
         // 根据栏目定义
         defaultBanner: function() {
             return "";
@@ -269,24 +168,9 @@ export default {
         appendPage: function(i) {
             this.loadPosts(i, true);
         },
-        commitSearch: function() {
+        filter : function (o){
+            this[o['type']] = o['val']
             this.loadPosts();
-        },
-        filterMark: function(val) {
-            this.mark = val;
-            this.filter_visible = false;
-            this.loadPosts();
-        },
-        reorder: function(val) {
-            this.order = val;
-            this.order_visible = false;
-            this.loadPosts();
-        },
-        showFilter: function() {
-            this.filter_visible = !this.filter_visible;
-        },
-        showOrder: function() {
-            this.order_visible = !this.order_visible;
         },
         showBanner: function(val) {
             return val ? showMinibanner(val) : this.defaultBanner;
@@ -344,7 +228,9 @@ export default {
     created: function() {
         this.loadPosts(1);
     },
-    components: {},
+    components: {
+        listbox
+    },
 };
 </script>
 
