@@ -74,7 +74,7 @@ import singlebox from "@jx3box/jx3box-page/src/cms-single";
 import {resolveImagePath} from '@jx3box/jx3box-common/js/utils'
 import { getPost } from "../service/post.js";
 import { getStat, postStat } from "../service/stat.js";
-import facedata from "@/components/facedata.vue";
+import facedata from "@jx3box/jx3box-facedat/src/Facedat.vue";
 
 export default {
     name: "single",

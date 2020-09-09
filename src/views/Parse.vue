@@ -44,7 +44,6 @@
 
 <script>
 import { uploadData, parseData } from "../service/share.js";
-import facedata from '@/components/facedata.vue'
 export default {
     name: "Parse",
     props: [],
