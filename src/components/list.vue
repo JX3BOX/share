@@ -27,7 +27,8 @@
                     class="input-with-select"
                     @change="loadPosts"
                 >
-                    <el-select
+                    <span slot="prepend">搜 索</span>
+                    <!-- <el-select
                         v-model="searchType"
                         slot="prepend"
                         placeholder="请选择"
@@ -35,7 +36,7 @@
                     >
                         <el-option label="作者" value="meta_1"></el-option>
                         <el-option label="标题" value="title"></el-option>
-                    </el-select>
+                    </el-select> -->
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
@@ -94,7 +95,7 @@ export default {
             loading: false, //加载状态
 
             search: "",
-            searchType: "meta_1",
+            // searchType: "meta_1",
 
             data: [], //数据列表
             page: 1, //当前页数
@@ -120,7 +121,7 @@ export default {
             };
             // params.subtype = this.facetype
             if (this.search) {
-                params[this.searchType] = this.search;
+                params.search = this.search;
             }
             if (this.order) {
                 params.order = this.order;
