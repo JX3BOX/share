@@ -24,4 +24,4 @@ yarn-error.log*
 .user.ini
 .nuxt
 
-package-lock.json
+# package-lock.json
