@@ -25,7 +25,6 @@
                     placeholder="请输入搜索内容"
                     v-model="search"
                     class="input-with-select"
-                    @change="loadPosts"
                 >
                     <span slot="prepend">关键词</span>
                     <!-- <el-select
@@ -103,6 +102,7 @@ export default {
             total: 1, //总条目数
             pages: 1, //总页数
             per: 32, //每页条目
+            appendMode : false, //追加模式
 
             order: "", //排序模式
             mark: "", //筛选模式
@@ -119,8 +119,8 @@ export default {
             let params = {
                 per: this.per,
                 subtype: this.subtype,
+                page : ~~this.page || 1
             };
-            // params.subtype = this.facetype
             if (this.search) {
                 params.search = this.search;
             }
@@ -144,17 +144,13 @@ export default {
         },
     },
     methods: {
-        loadPosts: function(i = 1, append = false) {
-            let query = Object.assign(this.params, {
-                page: i,
-            });
+        loadPosts: function() {
             this.loading = true;
-            getPosts(query, this)
+            getPosts(this.params, this)
                 .then((res) => {
-                    if (append) {
+                    if (this.appendMode) {
                         this.data = this.data.concat(res.data.data.list);
                     } else {
-                        window.scrollTo(0, 0);
                         this.data = res.data.data.list;
                     }
                     this.total = res.data.data.total;
@@ -165,14 +161,17 @@ export default {
                 });
         },
         changePage: function(i) {
-            this.loadPosts(i);
+            this.appendMode = false
+            this.page = i
+            window.scrollTo(0, 0);
         },
         appendPage: function(i) {
-            this.loadPosts(i, true);
+            this.appendMode = true
+            this.page = i
         },
-        filter : function (o){
-            this[o['type']] = o['val']
-            this.loadPosts();
+        filter: function(o) {
+            this.appendMode = false
+            this[o["type"]] = o["val"];
         },
         showBanner: function(val) {
             return val ? showMinibanner(val) : this.defaultBanner;
@@ -228,8 +227,20 @@ export default {
             return mark_map[val];
         },
     },
+    watch : {
+        params : {
+            deep : true,
+            handler : function (){
+                this.loadPosts()
+            }
+        },
+        '$route.query.page' : function (val){
+            this.page = ~~val
+        }
+    },
     created: function() {
-        this.loadPosts(1);
+        this.page = ~~this.$route.query.page || 1
+        this.loadPosts()
     },
     components: {
         listbox

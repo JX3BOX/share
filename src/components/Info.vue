@@ -5,10 +5,10 @@
             <!-- <a class="u-item" href="https://jq.qq.com/?_wv=1027&k=InbtJGcw" target="_blank">⚽️ 交流群</a> -->
         </div>
 
-        <div class="m-info-router">
+        <!-- <div class="m-info-router">
             <router-link to="/"><i class="el-icon-collection"></i></router-link>
             <a href="/app/facedata" target="_blank"><i class="el-icon-set-up"></i></a>
-        </div>
+        </div> -->
     </div>
 </template>
 

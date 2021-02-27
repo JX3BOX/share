@@ -10,7 +10,7 @@
             />
             <p class="u-status" v-if="!data">
                 请上传脸型数据，如何导出数据请查看<a
-                    href="https://www.jx3box.com/tool/?pid=746"
+                    href="https://www.jx3box.com/tool/746"
                     target="_blank"
                     >《捏脸数据导入导出方法》</a
                 >
