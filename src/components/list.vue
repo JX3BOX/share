@@ -77,7 +77,7 @@ import { cms as mark_map } from "@jx3box/jx3box-common/js/mark.json";
 import _ from "lodash";
 import { getPosts } from "../service/post";
 import dateFormat from "../utils/dateFormat";
-import { __ossMirror } from "@jx3box/jx3box-common/js/jx3box";
+import { __imgPath,__ossMirror } from "@jx3box/jx3box-common/js/jx3box";
 import {
     showAvatar,
     authorLink,
@@ -183,8 +183,7 @@ export default {
                     resolveImagePath(url) + "?x-oss-process=style/face_thumb"
                 );
             } else {
-                // TODO:默认占位图
-                return "";
+                return __imgPath + 'image/face/null.png';
             }
         },
         showAuthor(item) {
