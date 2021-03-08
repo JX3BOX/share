@@ -1,6 +1,6 @@
 <template>
     <div class="m-single-nav">
-        <Author :author="author"/>
+        <Author :uid="uid"/>
         <Authorposts :uid="uid"/>
     </div>
 </template>
