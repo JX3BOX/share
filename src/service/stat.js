@@ -1,5 +1,5 @@
 import axios from "axios";
-import { __next } from "@jx3box/jx3box-common/js/jx3box.json";
+import { __next } from "@jx3box/jx3box-common/data/jx3box.json";
 
 const stat = __next + 'api/post/'    //TODO:
 // const stat = "/api/post/";
