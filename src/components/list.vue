@@ -37,7 +37,7 @@
             </div>
             <template slot="filter">
                 <!-- 版本过滤 -->
-                <clientBy @filter="filter" type="std"></clientBy>
+                <clientBy @filter="filter" :type="client"></clientBy>
                 <!-- 排序过滤 -->
                 <orderBy @filter="filter"></orderBy>
             </template>
@@ -245,6 +245,7 @@ export default {
         },
         params: {
             deep: true,
+            immediate : true,
             handler: function() {
                 this.loadPosts();
             },
@@ -255,7 +256,6 @@ export default {
     },
     created: function() {
         this.page = ~~this.$route.query.page || 1;
-        this.loadPosts();
     },
     components: {
         listbox,
