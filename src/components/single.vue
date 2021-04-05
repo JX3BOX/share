@@ -1,5 +1,5 @@
 <template>
-    <singlebox :post="post" :author="author" :stat="stat" v-loading="loading">
+    <singlebox :post="post" :stat="stat" v-loading="loading">
         <div class="u-meta u-sub-block" slot="single-header">
             <em class="u-label">类型</em>
             <span class="u-value">
@@ -73,7 +73,7 @@ import _ from 'lodash'
 import singlebox from "@jx3box/jx3box-page/src/cms-single";
 import {resolveImagePath} from '@jx3box/jx3box-common/js/utils'
 import { getPost } from "../service/post.js";
-import { getStat, postStat } from "../service/stat.js";
+import { getStat, postStat } from "@jx3box/jx3box-common/js/stat";
 import facedata from "@jx3box/jx3box-facedat/src/Facedat.vue";
 
 export default {
@@ -91,7 +91,7 @@ export default {
     },
     computed: {
         id: function() {
-            return this.$store.state.pid;
+            return this.$store.state.id;
         },
         post_subtype: function() {
             return _.get(this.post, "post_subtype") || '';
@@ -132,24 +132,21 @@ export default {
             this.loading = true;
             getPost(this.id, this)
                 .then((res) => {
-                    this.post = this.$store.state.post = res.data.data.post;
-                    this.meta = this.$store.state.meta =
-                        res.data.data.post.post_meta;
-                    this.author = this.$store.state.author =
-                        res.data.data.author;
-                    this.$store.state.status = true;
+                    this.post = this.$store.state.post = res.data.data;
+                    this.$store.state.user_id = this.post.post_author;
+                    document.title = this.post.post_title
 
-                    // 分享海报重定义
+                    this.meta = this.$store.state.meta = res.data.data.post_meta;
                     this.post.post_banner = this.meta.pics && this.meta.pics.length && this.meta.pics[0]['url']
                 })
                 .finally(() => {
                     this.loading = false;
                 });
 
-            getStat(this.id).then((data) => {
-                if (data) this.stat = this.$store.state.stat = data;
+            getStat('share',this.id).then((res) => {
+                this.stat = this.$store.state.stat = res.data;
             });
-            postStat(this.id);
+            postStat('share',this.id);
         }
     },
     components: {

@@ -50,7 +50,7 @@
                             <a
                                 class="u-face"
                                 :target="target"
-                                :href="item.post.ID | postLink"
+                                :href="item.ID | postLink"
                             >
                                 <i>
                                     <img
@@ -109,9 +109,9 @@ export default {
             per: 32, //每页条目
             appendMode: false, //追加模式
 
-            order: "", //排序模式
+            order: "update", //排序模式
             mark: "", //筛选模式
-            client:"",  //版本选择
+            client: this.$store.state.client, //版本选择
 
             facetype: "",
             facetype_visible: "",
@@ -119,26 +119,29 @@ export default {
     },
     computed: {
         subtype: function() {
-            return this.$store.state.subtype;
+            return this.$store.state.subtype
         },
-        params: function() {
+        resetParams: function () {
+            return [this.subtype, this.search, this.mark, this.client];
+        },
+        params: function () {
             let params = {
                 per: this.per,
-                subtype: this.subtype,
                 page: ~~this.page || 1,
+                sticky: 1,
             };
-            if (this.search) {
-                params.search = this.search;
-            }
-            if (this.order) {
-                params.order = this.order;
-            }
-            if (this.mark) {
-                params.mark = this.mark;
-            }
-            if(this.client){
-                params.client = this.client
-            }
+            let optionalParams = [
+                "subtype",
+                "search",
+                "order",
+                "mark",
+                "client",
+            ];
+            optionalParams.forEach((item) => {
+                if (this[item]) {
+                    params[item] = this[item];
+                }
+            });
             return params;
         },
         target: function() {
@@ -166,6 +169,7 @@ export default {
                     this.pages = res.data.data.pages;
                 })
                 .finally(() => {
+                    this.appendMode = false
                     this.loading = false;
                 });
         },
@@ -186,7 +190,7 @@ export default {
             return val ? showMinibanner(val) : this.defaultBanner;
         },
         showThumb: function(item) {
-            let url = _.get(item.post.post_meta, "pics[0]['url']");
+            let url = _.get(item.post_meta, "pics[0]['url']");
             if (url) {
                 return (
                     resolveImagePath(url) + "?x-oss-process=style/face_thumb"
@@ -196,10 +200,10 @@ export default {
             }
         },
         showAuthor(item) {
-            return _.get(item.post.post_meta, "author") || "匿名";
+            return _.get(item.post_meta, "author") || "匿名";
         },
         showFile(item) {
-            let url = _.get(item.post.post_meta, "file") || "";
+            let url = _.get(item.post_meta, "file") || "";
             if (url) {
                 return resolveImagePath(url);
             } else {
@@ -236,6 +240,9 @@ export default {
         },
     },
     watch: {
+        subtype : function (){
+            this.search = ''  
+        },
         params: {
             deep: true,
             handler: function() {

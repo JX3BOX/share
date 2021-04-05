@@ -15,31 +15,29 @@
             <Nav class="m-nav" />
         </LeftSidebar>
         <Main :withoutRight="true">
-            <list class="m-main" />
+            <single />
             <Footer></Footer>
         </Main>
     </div>
 </template>
 
 <script>
-import Nav from "@/components/list_nav.vue";
-import list from "@/components/list.vue";
-import { getQuery } from "@jx3box/jx3box-common/js/utils";
+import Nav from "@/components/single_nav.vue";
+import single from "@/components/single.vue";
 export default {
     name: "App",
     props: [],
     data: function () {
         return {};
     },
-    computed: {},
     methods: {},
     components: {
         Nav,
-        list,
+        single,
     },
-    beforeCreate: function () {
-        this.$store.state.subtype = getQuery("subtype");
-    },
+    beforeCreate : function (){
+        
+    }
 };
 </script>
 

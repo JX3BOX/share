@@ -1,30 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { getAppID } from "@jx3box/jx3box-common/js/utils";
 
 Vue.use(Vuex);
 
 let store = {
     state: {
-        // 模式
-        mode : '',
-
-        // 列表
-        subtype : '',
-
-        // 单页
-        pid : 0,
-        post : {},
-        meta : {},
-        setting : {},
-        author : {},
-        status : false,
+        // client
+        client: location.href.includes("origin") ? "origin" : "std",
+        // post
+        id : getAppID(),
+        user_id : 0,
+        post : '',
     },
-    mutations: {
-    },
-    getters: {
-    },
+    mutations: {},
+    getters: {},
     actions: {},
-    modules: {}
+    modules: {},
 };
 
 export default new Vuex.Store(store);

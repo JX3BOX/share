@@ -1,7 +1,6 @@
 <template>
     <div class="m-single-nav">
         <Author :uid="uid"/>
-        <Authorposts :uid="uid"/>
     </div>
 </template>
 
@@ -15,11 +14,8 @@ export default {
         };
     },
     computed: {
-        author : function (){
-            return this.$store.state.author
-        },
         uid : function (){
-            return this.author.uid
+            return this.$store.state.user_id
         }
     },
     methods: {
