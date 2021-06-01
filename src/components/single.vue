@@ -8,7 +8,7 @@
         </div>
         <div class="m-single-meta">
                 <div class="m-single-pics" v-if="meta.pics && meta.pics.length">
-                    <el-carousel :interval="4000" arrow="always" height="600px">
+                    <el-carousel :interval="4000" type="card" arrow="always" height="600px">
                         <el-carousel-item
                             v-for="(item, i) in meta.pics"
                             :key="i"
