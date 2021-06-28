@@ -10,16 +10,16 @@
 
         <h5 class="u-title">分类导航</h5>
         <div class="m-nav-group m-share-nav">
-            <a
+            <router-link
                 v-for="(item,i) in menu"
-                :href="typeLink(item.slug)"
+                :to="typeLink(item.slug)"
                 :key="i"
                 :class="{on:isActive(item.slug)}"
             >
                 <i :class="item.icon"></i>
                 <b>{{item.name}}</b>
                 <span>{{item.desc}}</span>
-            </a>
+            </router-link>
         </div>
 
         <h5 class="u-title">在线应用</h5>
@@ -43,38 +43,38 @@ export default {
                     slug: "",
                     icon: "el-icon-receiving",
                     name: "全部",
-                    desc: "All",
+                    desc: "☆ All",
                 },
                 {
                     slug: "成男",
                     icon: "el-icon-male",
                     name: "成男",
-                    desc: "Man",
+                    desc: "♀ Male",
                 },
                 {
                     slug: "成女",
                     icon: "el-icon-female",
                     name: "成女",
-                    desc: "Woman",
+                    desc: "♂ Female",
                 },
                 {
                     slug: "正太",
                     icon: "el-icon-male",
                     name: "正太",
-                    desc: "Boy",
+                    desc: "♀ Boy",
                 },
                 {
                     slug: "萝莉",
                     icon: "el-icon-female",
                     name: "萝莉",
-                    desc: "Girl",
+                    desc: "♂ Girl",
                 },
             ],
         };
     },
     computed: {
         subtype: function () {
-            return this.$store.state.subtype || "";
+            return this.$route.query.subtype || "";
         },
         client: function () {
             return this.$store.state.client;
@@ -82,7 +82,8 @@ export default {
     },
     methods: {
         typeLink: function (subtype) {
-            return "./?subtype=" + subtype;
+            // return "./?subtype=" + subtype;
+            return "/?subtype=" + subtype;
         },
         isActive: function (slug) {
             return this.$route.name == "index" && slug == this.subtype;

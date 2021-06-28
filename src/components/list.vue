@@ -11,17 +11,8 @@
         >
             <!-- 搜索 -->
             <div class="m-archive-search" slot="search-before">
-                <a
-                    :href="publish_link"
-                    class="u-publish el-button el-button--primary"
-                >
-                    + 分享妆容
-                </a>
-                <el-input
-                    placeholder="请输入搜索内容"
-                    v-model="search"
-                    class="input-with-select"
-                >
+                <a :href="publish_link" class="u-publish el-button el-button--primary">+ 分享捏脸</a>
+                <el-input placeholder="请输入搜索内容" v-model="search" class="input-with-select">
                     <span slot="prepend">关键词</span>
                     <!-- <el-select
                         v-model="searchType"
@@ -31,33 +22,33 @@
                     >
                         <el-option label="作者" value="meta_1"></el-option>
                         <el-option label="标题" value="title"></el-option>
-                    </el-select> -->
+                    </el-select>-->
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
-            <template slot="filter">
-                <!-- 版本过滤 -->
-                <clientBy @filter="filter" :type="client"></clientBy>
-                <!-- 排序过滤 -->
-                <orderBy @filter="filter"></orderBy>
-            </template>
+            <!-- <template slot="filter"> -->
+            <!-- 版本过滤 -->
+            <!-- <clientBy @filter="filter" :type="client"></clientBy> -->
+            <!-- 排序过滤 -->
+            <!-- <orderBy @filter="filter"></orderBy> -->
+            <!-- </template> -->
+
+            <el-alert
+                class="m-single-notice"
+                title="特别说明"
+                type="warning"
+                description="我们尊重和保护原作者版权，部分作品由网站团队自费从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除，亦欢迎作者自行上传推广自己作品。"
+                show-icon
+            ></el-alert>
 
             <!-- 列表 -->
             <div class="m-face-list" v-if="data.length">
                 <el-row class="u-list" :gutter="20">
                     <el-col :span="3" v-for="(item, i) in data" :key="i">
                         <li class="u-item">
-                            <a
-                                class="u-face"
-                                :target="target"
-                                :href="item.ID | postLink"
-                            >
+                            <a class="u-face" :target="target" :href="item.ID | postLink">
                                 <i>
-                                    <img
-                                        class="u-pic"
-                                        :src="showThumb(item)"
-                                        loading="lazy"
-                                    />
+                                    <img class="u-pic" :src="showThumb(item)" loading="lazy" />
                                     <!-- <span class="u-author">{{showAuthor(item)}}</span> -->
                                 </i>
                             </a>
@@ -65,9 +56,10 @@
                                 class="u-down u-btn-down el-button el-button--default is-plain el-button--mini"
                                 :class="{ 'is-disabled': !showFile(item) }"
                                 :href="showFile(item)"
-                                ><i class="el-icon-download"></i
-                                ><span>立即下载</span></a
                             >
+                                <i class="el-icon-download"></i>
+                                <span>立即下载</span>
+                            </a>
                         </li>
                     </el-col>
                 </el-row>
@@ -95,7 +87,7 @@ import {
 export default {
     name: "list",
     props: [],
-    data: function() {
+    data: function () {
         return {
             loading: false, //加载状态
 
@@ -118,8 +110,9 @@ export default {
         };
     },
     computed: {
-        subtype: function() {
-            return this.$store.state.subtype
+        subtype: function () {
+            // return this.$store.state.subtype;
+            return this.$route.query.subtype;
         },
         resetParams: function () {
             return [this.subtype, this.search, this.mark, this.client];
@@ -135,7 +128,7 @@ export default {
                 "search",
                 "order",
                 "mark",
-                "client",
+                // "client",    //捏脸不区分怀旧服|正式服
             ];
             optionalParams.forEach((item) => {
                 if (this[item]) {
@@ -144,19 +137,19 @@ export default {
             });
             return params;
         },
-        target: function() {
+        target: function () {
             return buildTarget();
         },
         // 根据栏目定义
-        defaultBanner: function() {
+        defaultBanner: function () {
             return "";
         },
-        publish_link: function(val) {
+        publish_link: function (val) {
             return publishLink("share");
         },
     },
     methods: {
-        loadPosts: function() {
+        loadPosts: function () {
             this.loading = true;
             getPosts(this.params, this)
                 .then((res) => {
@@ -169,27 +162,27 @@ export default {
                     this.pages = res.data.data.pages;
                 })
                 .finally(() => {
-                    this.appendMode = false
+                    this.appendMode = false;
                     this.loading = false;
                 });
         },
-        changePage: function(i) {
+        changePage: function (i) {
             this.appendMode = false;
             this.page = i;
             window.scrollTo(0, 0);
         },
-        appendPage: function(i) {
+        appendPage: function (i) {
             this.appendMode = true;
             this.page = i;
         },
-        filter: function(o) {
+        filter: function (o) {
             this.appendMode = false;
             this[o["type"]] = o["val"];
         },
-        showBanner: function(val) {
+        showBanner: function (val) {
             return val ? showMinibanner(val) : this.defaultBanner;
         },
-        showThumb: function(item) {
+        showThumb: function (item) {
             let url = _.get(item.post_meta, "pics[0]['url']");
             if (url) {
                 return (
@@ -210,51 +203,51 @@ export default {
                 return "";
             }
         },
-        filterFacetype: function(val) {
+        filterFacetype: function (val) {
             this.facetype = val;
             this.loadPosts();
         },
-        showFacetype: function() {
+        showFacetype: function () {
             this.facetype_visible = !this.facetype_visible;
         },
     },
     filters: {
-        dateFormat: function(val) {
+        dateFormat: function (val) {
             return dateFormat(new Date(val));
         },
-        showAvatar: function(val) {
+        showAvatar: function (val) {
             return showAvatar(val);
         },
-        authorLink: function(val) {
+        authorLink: function (val) {
             return authorLink(val);
         },
-        postLink: function(val) {
+        postLink: function (val) {
             // return "./?pid=" + val;
             return location.origin + "/" + getAppType() + "/" + val;
         },
-        isHighlight: function(val) {
+        isHighlight: function (val) {
             return val ? `color:${val};font-weight:600;` : "";
         },
-        showMark: function(val) {
+        showMark: function (val) {
             return mark_map[val];
         },
     },
     watch: {
-        subtype : function (){
-            this.search = ''  
+        subtype: function () {
+            this.search = "";
         },
         params: {
             deep: true,
-            immediate : true,
-            handler: function() {
+            immediate: true,
+            handler: function () {
                 this.loadPosts();
             },
         },
-        "$route.query.page": function(val) {
+        "$route.query.page": function (val) {
             this.page = ~~val;
         },
     },
-    created: function() {
+    created: function () {
         this.page = ~~this.$route.query.page || 1;
     },
     components: {
