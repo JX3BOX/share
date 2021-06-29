@@ -25,4 +25,8 @@ function getMyPostCount() {
     return $cms().get("/api/cms/posts/user/my/count");
 }
 
-export { getPosts, getPost, getMyPostCount, getMyPost };
+function setPost(id, data) {
+    return $cms().put(`/api/cms/post/${id}/setting`, data);
+}
+
+export { getPosts, getPost, getMyPostCount, getMyPost, setPost };

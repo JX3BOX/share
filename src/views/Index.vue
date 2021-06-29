@@ -14,23 +14,19 @@ import {
 } from "@jx3box/jx3box-common/js/utils";
 import { __ossMirror } from "@jx3box/jx3box-common/data/jx3box.json";
 import lodash from "lodash";
-import list from '@/components/list.vue'
+import list from "@/components/list.vue";
 
 export default {
     name: "Index",
     props: [],
-    data: function() {
-        return {
-        };
+    data: function () {
+        return {};
     },
-    computed: {
-    },
-    methods: {
-    },
-    created: function() {
-    },
+    computed: {},
+    methods: {},
+    created: function () {},
     components: {
-        list
+        list,
     },
 };
 </script>

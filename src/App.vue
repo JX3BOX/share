@@ -16,6 +16,13 @@
         </LeftSidebar>
         <Main :withoutRight="true">
             <list class="m-main" />
+            <!-- <el-alert
+                class="m-single-notice"
+                title="特别说明"
+                type="warning"
+                description="我们尊重和保护原作者版权，部分作品由网站团队自费从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除，亦欢迎作者自行上传推广自己作品。"
+                show-icon
+            ></el-alert> -->
             <Footer></Footer>
         </Main>
     </div>

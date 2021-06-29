@@ -26,44 +26,66 @@
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
+
             <!-- <template slot="filter"> -->
             <!-- 版本过滤 -->
             <!-- <clientBy @filter="filter" :type="client"></clientBy> -->
-            <!-- 排序过滤 -->
-            <!-- <orderBy @filter="filter"></orderBy> -->
             <!-- </template> -->
 
-            <el-alert
-                class="m-single-notice"
-                title="特别说明"
-                type="warning"
-                description="我们尊重和保护原作者版权，部分作品由网站团队自费从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除，亦欢迎作者自行上传推广自己作品。"
-                show-icon
-            ></el-alert>
+            <!-- 精选 -->
+            <div class="m-face-rec">
+                <el-radio-group v-model="rec" size="small" @change="updateMark">
+                    <el-radio-button :label="key" v-for="(item,key) in recmap" :key="key"></el-radio-button>
+                </el-radio-group>
+            </div>
 
             <!-- 列表 -->
-            <div class="m-face-list" v-if="data.length">
-                <el-row class="u-list" :gutter="20">
-                    <el-col :span="3" v-for="(item, i) in data" :key="i">
-                        <li class="u-item">
-                            <a class="u-face" :target="target" :href="item.ID | postLink">
-                                <i>
-                                    <img class="u-pic" :src="showThumb(item)" loading="lazy" />
-                                    <!-- <span class="u-author">{{showAuthor(item)}}</span> -->
-                                </i>
-                            </a>
-                            <a
+            <div class="m-face-list" v-if="data && data.length">
+                <!-- <el-row class="u-list" :gutter="20"> -->
+                <!-- <el-col :span="3"> -->
+                <li class="u-item" v-for="(item, i) in data" :key="i">
+                    <a class="u-face" :target="target" :href="item.ID | postLink">
+                        <i class="u-img">
+                            <img class="u-pic" :src="showThumb(item)" loading="lazy" />
+                            <!-- TODO:角标 -->
+                        </i>
+                        <span class="u-author">@{{showAuthor(item)}}</span>
+                    </a>
+                    <span class="u-op" v-if="isEditor">
+                        <i
+                            class="u-op-hot"
+                            title="设为热门"
+                            :class="{on:hasMark(item,'newbie')}"
+                            @click="setMark(item,'newbie')"
+                        >♥</i>
+                        <i
+                            class="u-op-rec"
+                            title="设为推荐"
+                            :class="{on:hasMark(item,'advanced')}"
+                            @click="setMark(item,'advanced')"
+                        >✿</i>
+                        <i
+                            class="u-op-star"
+                            title="设为精选"
+                            :class="{on:hasMark(item,'recommended')}"
+                            @click="setMark(item,'recommended')"
+                        >★</i>
+                    </span>
+                    <!-- <a
                                 class="u-down u-btn-down el-button el-button--default is-plain el-button--mini"
                                 :class="{ 'is-disabled': !showFile(item) }"
                                 :href="showFile(item)"
                             >
                                 <i class="el-icon-download"></i>
                                 <span>立即下载</span>
-                            </a>
-                        </li>
-                    </el-col>
-                </el-row>
+                    </a>-->
+                </li>
+                <!-- </el-col> -->
+                <!-- </el-row> -->
             </div>
+
+            <!-- 排序过滤 -->
+            <orderBy class="m-face-order" @filter="filter"></orderBy>
         </listbox>
     </div>
 </template>
@@ -72,7 +94,7 @@
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
 import { cms as mark_map } from "@jx3box/jx3box-common/data/mark.json";
 import _ from "lodash";
-import { getPosts } from "../service/post";
+import { getPosts, setPost } from "../service/post";
 import dateFormat from "../utils/dateFormat";
 import { __imgPath, __ossMirror } from "@jx3box/jx3box-common/data/jx3box";
 import {
@@ -83,7 +105,10 @@ import {
     buildTarget,
     resolveImagePath,
     getAppType,
+    getThumbnail,
+    showBanner,
 } from "@jx3box/jx3box-common/js/utils";
+import User from "@jx3box/jx3box-common/js/user";
 export default {
     name: "list",
     props: [],
@@ -98,7 +123,6 @@ export default {
             page: 1, //当前页数
             total: 1, //总条目数
             pages: 1, //总页数
-            per: 32, //每页条目
             appendMode: false, //追加模式
 
             order: "update", //排序模式
@@ -107,6 +131,20 @@ export default {
 
             facetype: "",
             facetype_visible: "",
+
+            rec: "全部",
+            recmap: {
+                全部: "",
+                热门: "newbie",
+                推荐: "advanced",
+                精选: "recommended",
+            },
+            markmap: {
+                newbie: "热门",
+                advanced: "推荐",
+                recommended: "精选",
+            },
+            isEditor: User.isEditor(),
         };
     },
     computed: {
@@ -147,6 +185,14 @@ export default {
         publish_link: function (val) {
             return publishLink("share");
         },
+
+        // 每页条数
+        per: function () {
+            let max_width = window.innerWidth - 345;
+            let perline = Math.floor(max_width / 210);
+            let count = ~~perline * 4 || 32;
+            return count;
+        },
     },
     methods: {
         loadPosts: function () {
@@ -185,9 +231,10 @@ export default {
         showThumb: function (item) {
             let url = _.get(item.post_meta, "pics[0]['url']");
             if (url) {
-                return (
-                    resolveImagePath(url) + "?x-oss-process=style/face_thumb"
-                );
+                // return (
+                //     resolveImagePath(url) + "?x-oss-process=style/face_thumb"
+                // );
+                return showBanner(url, "face");
             } else {
                 return __imgPath + "image/face/null.png";
             }
@@ -209,6 +256,30 @@ export default {
         },
         showFacetype: function () {
             this.facetype_visible = !this.facetype_visible;
+        },
+        updateMark: function (val) {
+            this.mark = this.recmap[this.rec];
+        },
+        hasMark: function (item, key) {
+            return item.mark?.includes(key);
+        },
+        setMark: function (item, key) {
+            let hasKey = item.mark?.includes(key);
+            item.mark = hasKey ? [] : [key];
+
+            let msg = hasKey ? "取消" : "设置";
+            msg += this.markmap[key];
+            msg += "成功";
+
+            setPost(item.ID, {
+                mark: item.mark,
+            }).then((res) => {
+                this.$notify({
+                    title: "成功",
+                    message: msg,
+                    type: "success",
+                });
+            });
         },
     },
     filters: {
