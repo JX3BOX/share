@@ -26,7 +26,7 @@
         <div class="m-nav-group m-share-app">
             <a href="/app/facedata" target="_blank">
                 <img svg-inline src="../assets/img/mirror.svg" />
-                <span>脸型数据分析</span>
+                <span>捏脸数据解析器</span>
             </a>
         </div>
     </div>

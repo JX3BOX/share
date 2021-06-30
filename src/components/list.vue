@@ -47,7 +47,6 @@
                     <a class="u-face" :target="target" :href="item.ID | postLink">
                         <i class="u-img">
                             <img class="u-pic" :src="showThumb(item)" loading="lazy" />
-                            <!-- TODO:角标 -->
                         </i>
                         <span class="u-author">@{{showAuthor(item)}}</span>
                     </a>
@@ -71,13 +70,30 @@
                             @click="setMark(item,'recommended')"
                         >★</i>
                     </span>
+                    <span class="u-op u-readOnly" v-else>
+                        <i
+                            class="u-op-hot"
+                            :class="{on:hasMark(item,'newbie')}"
+                            v-if="hasMark(item,'newbie')"
+                        >♥</i>
+                        <i
+                            class="u-op-rec"
+                            :class="{on:hasMark(item,'advanced')}"
+                            v-if="hasMark(item,'advanced')"
+                        >✿</i>
+                        <i
+                            class="u-op-star"
+                            :class="{on:hasMark(item,'recommended')}"
+                            v-if="hasMark(item,'recommended')"
+                        >★</i>
+                    </span>
                     <!-- <a
-                                class="u-down u-btn-down el-button el-button--default is-plain el-button--mini"
-                                :class="{ 'is-disabled': !showFile(item) }"
-                                :href="showFile(item)"
-                            >
-                                <i class="el-icon-download"></i>
-                                <span>立即下载</span>
+                        class="u-down u-btn-down el-button el-button--default is-plain el-button--mini"
+                        :class="{ 'is-disabled': !showFile(item) }"
+                        :href="showFile(item)"
+                    >
+                        <i class="el-icon-download"></i>
+                        <span>立即下载</span>
                     </a>-->
                 </li>
                 <!-- </el-col> -->
@@ -236,7 +252,7 @@ export default {
                 // );
                 return showBanner(url, "face");
             } else {
-                return __imgPath + "image/face/null.png";
+                return __imgPath + "image/face/null2.png";
             }
         },
         showAuthor(item) {
