@@ -275,6 +275,7 @@ export default {
         },
         updateMark: function (val) {
             this.mark = this.recmap[this.rec];
+            this.page = 1
         },
         hasMark: function (item, key) {
             return item.mark?.includes(key);
