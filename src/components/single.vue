@@ -54,6 +54,8 @@
             description="我们尊重和保护原作者版权，部分作品由网站团队自费从淘宝购买上传无法一一甄别原作是否付费，如有侵权，请联系admin@jx3box.com，我们将立即删除，亦欢迎作者自行上传推广自己作品。"
             show-icon
         ></el-alert>-->
+
+        <Thx class="m-thx" slot="single-append" :postId="id" postType="share" :userId="author_id" :adminBoxcoinEnable="true" :userBoxcoinEnable="true"/>
     </singlebox>
 </template>
 
@@ -82,6 +84,9 @@ export default {
     computed: {
         id: function () {
             return this.$store.state.id;
+        },
+        author_id : function (){
+            return this.post?.post_author || 0
         },
         post_subtype: function () {
             return _.get(this.post, "post_subtype") || "";
