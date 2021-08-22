@@ -12,7 +12,7 @@
   "dependencies": {
     "@jx3box/jx3box-common": "^6.5.3",
     "@jx3box/jx3box-common-ui": "^4.9.7",
-    "@jx3box/jx3box-facedat": "^2.2.3",
+    "@jx3box/jx3box-facedat": "^2.2.4",
     "@jx3box/jx3box-page": "^0.6.1",
     "axios": "^0.19.2",
     "core-js": "^3.4.3",
