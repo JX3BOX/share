@@ -13,7 +13,7 @@ module.exports = {
             template : 'public/index.html',
             filename:'index.html',
         },
-        post : {
+        share : {
             title : '捏脸分享 - JX3BOX',
             entry:'src/post.js',
             template : 'public/index.html',
@@ -37,13 +37,13 @@ module.exports = {
                 }
             },
             "/api/summary": {
-                "target": "https://next.jx3box.com",
+                "target": "https://next2.jx3box.com",
                 "onProxyReq": function (request) {
                     request.setHeader("origin", "");
                 }
             },
             "/api/comment": {
-                "target": "https://next.jx3box.com",
+                "target": "https://next2.jx3box.com",
                 "onProxyReq": function (request) {
                     request.setHeader("origin", "");
                 }
@@ -52,7 +52,7 @@ module.exports = {
                 "target": process.env["DEV_SERVER"] == "true" ? "http://localhost:5120" : "https://cms.jx3box.com",
             },
             "/api": {
-                "target": "https://next.jx3box.com",
+                "target": "https://next2.jx3box.com",
                 "onProxyReq": function (request) {
                     request.setHeader("origin", "");
                 }
