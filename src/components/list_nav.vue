@@ -4,7 +4,7 @@
             <em>休闲玩法交流群</em> :
             <strong>
                 <a href="https://jq.qq.com/?_wv=1027&k=CAiizina" v-if="client == 'origin'">590349918</a>
-                <a href="https://jq.qq.com/?_wv=1027&k=InbtJGcw">658035079</a>
+                <a href="https://jq.qq.com/?_wv=1027&k=InbtJGcw" v-else>658035079</a>
             </strong>
         </RightSideMsg>
 
