@@ -5,10 +5,13 @@
             <!-- <a class="u-item" href="https://jq.qq.com/?_wv=1027&k=InbtJGcw" target="_blank">⚽️ 交流群</a> -->
         </div>
 
-        <!-- <div class="m-info-router">
-            <router-link to="/"><i class="el-icon-collection"></i></router-link>
-            <a href="/app/facedata" target="_blank"><i class="el-icon-set-up"></i></a>
-        </div> -->
+        <div class="m-info-router">
+            <router-link to="/"><i class="el-icon-receiving"></i></router-link>
+            <router-link to="/?subtype=成男"><i class="el-icon-male"></i></router-link>
+            <router-link to="/?subtype=成女"><i class="el-icon-female"></i></router-link>
+            <router-link to="/?subtype=正太"><i class="el-icon-cold-drink"></i></router-link>
+            <router-link to="/?subtype=萝莉"><i class="el-icon-sugar"></i></router-link>
+        </div>
     </div>
 </template>
 
