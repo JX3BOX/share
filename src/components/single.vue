@@ -14,7 +14,7 @@
                     </el-carousel-item>
                 </el-carousel>
             </div>
-            <div class="m-single-author" v-if="origin_author">By @<b>{{origin_author}}</b></div>
+            <div class="m-single-author" v-if="origin_author">作者 : <b>{{origin_author}}</b></div>
             <div class="m-single-data">
                 <el-divider content-position="left">独家数据分析</el-divider>
                 <facedata v-if="facedata" :data="facedata" />
