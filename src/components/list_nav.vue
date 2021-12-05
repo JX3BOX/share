@@ -15,7 +15,8 @@
                 :key="i"
                 :class="{on:isActive(item.slug)}"
             >
-                <i :class="item.icon"></i>
+                <!-- <i :class="item.icon"></i> -->
+                <img :src="getThumbnail(item.name)" :alt="item.name">
                 <b>{{item.name}}</b>
                 <span>{{item.desc}}</span>
             </router-link>
@@ -87,6 +88,9 @@ export default {
         isActive: function (slug) {
             return this.$route.name == "index" && slug == this.subtype;
         },
+        getThumbnail : function (filename){
+            return require(`../assets/img/nav/${filename}.png`)
+        }
     },
     mounted: function () {},
     components: {},
