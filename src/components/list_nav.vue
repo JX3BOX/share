@@ -89,7 +89,7 @@ export default {
             return this.$route.name == "index" && slug == this.subtype;
         },
         getThumbnail : function (filename){
-            return require(`../assets/img/nav/${filename}.png`)
+            return require(`../assets/img/nav/${filename}.jpg`)
         }
     },
     mounted: function () {},
